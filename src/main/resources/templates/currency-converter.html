@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Converter</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #converter {
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 300px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select, button {
+            margin: 10px 0;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+        #result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="converter">
+  <h2>Currency Converter</h2>
+  <input type="number" id="amount" placeholder="Enter amount">
+  <select id="fromCurrency">
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+    <option value="JPY">JPY</option>
+    <option value="INR">INR</option>
+  </select>
+  <select id="toCurrency">
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+    <option value="JPY">JPY</option>
+    <option value="INR">INR</option>
+  </select>
+  <button onclick="convertCurrency()">Convert</button>
+  <p id="result">Result: </p>
+</div>
+
+<script>
+        function convertCurrency() {
+            try {
+                var amount = parseFloat(document.getElementById('amount').value);
+                var fromCurrency = document.getElementById('fromCurrency').value;
+                var toCurrency = document.getElementById('toCurrency').value;
+
+                fetch('/convert?amount=' + amount + '&from=' + fromCurrency + '&to=' + toCurrency)
+                    .then(response => response.text())
+                    .then(result => {
+                        document.getElementById('result').textContent = 'Result: ' + result;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert('Error converting currency. Please try again.');
+                    });
+            } catch (error) {
+                console.error(error);
+                alert('Invalid input. Please enter a valid number.');
+            }
+        }
+    </script>
+</body>
+</html>
